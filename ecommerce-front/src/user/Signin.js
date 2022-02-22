@@ -1,7 +1,11 @@
+import Layout from "../cores/Layout";
+
 const SignIn = () => {
   return (
     <>
-      <h1>Sign in</h1>
+     <Layout title="Sign in" description="Sign in Node React E-commerce App">
+        ...
+      </Layout>
     </>
   );
 };

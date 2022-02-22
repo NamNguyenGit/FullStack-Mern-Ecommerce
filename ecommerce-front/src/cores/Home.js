@@ -1,7 +1,12 @@
+import Layout from "./Layout";
+
+
 const Home = () => {
   return (
     <>
-      <h1>home</h1>
+      <Layout title="Home Page" description="Node React E-commerce App">
+        ...
+      </Layout>
     </>
   );
 };
