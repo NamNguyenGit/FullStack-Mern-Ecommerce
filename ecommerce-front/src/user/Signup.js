@@ -1,5 +1,7 @@
 import Layout from "../cores/Layout";
+import { Link } from "react-router-dom";
 import { useState } from "react";
+import { signup } from "../auth";
 
 const SignUp = () => {
   const [state, setState] = useState({
@@ -10,6 +12,31 @@ const SignUp = () => {
     success: false,
   });
 
+  const { name, email, password, success, error } = state;
+
+  const clickSubmit = (e) => {
+    e.preventDefault();
+    setState({ ...state, error: false });
+    signup({ name, email, password }).then((data) => {
+      if (data.error) {
+        setState({
+          ...state,
+          error: data.error,
+          success: false,
+        });
+      } else {
+        setState({
+          ...state,
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          success: true,
+        });
+      }
+    });
+  };
+
   const handleChange = (name) => (event) => {
     setState({
       ...state,
@@ -17,6 +44,7 @@ const SignUp = () => {
       [name]: event.target.value,
     });
   };
+
   const signUpForm = () => {
     return (
       <form>
@@ -26,6 +54,7 @@ const SignUp = () => {
             onChange={handleChange("name")}
             type="text"
             className="form-control"
+            value={name}
           />
         </div>
         <div className="form-group">
@@ -34,6 +63,7 @@ const SignUp = () => {
             onChange={handleChange("email")}
             type="email"
             className="form-control"
+            value={email}
           />
         </div>
         <div className="form-group">
@@ -42,10 +72,35 @@ const SignUp = () => {
             onChange={handleChange("password")}
             type="password"
             className="form-control"
+            value={password}
           />
         </div>
-        <button className="btn-primary">Submit</button>
+        <button onClick={clickSubmit} className="btn-primary">
+          Submit
+        </button>
       </form>
+    );
+  };
+
+  const showError = () => {
+    return (
+      <div
+        className="alert alert-danger"
+        style={{ display: error ? "" : "none" }}
+      >
+        {error}
+      </div>
+    );
+  };
+
+  const showSuccess = () => {
+    return (
+      <div
+        className="alert alert-info"
+        style={{ display: success ? "" : "none" }}
+      >
+        Sign Up Successful . Please <Link to="/signIn">Sign in</Link>
+      </div>
     );
   };
 
@@ -56,8 +111,9 @@ const SignUp = () => {
         description="Sign up Node React E-commerce App"
         className="container col-md-8 offset-md-2"
       >
+        {showError()}
+        {showSuccess()}
         {signUpForm()}
-        {JSON.stringify(state)}
       </Layout>
     </>
   );
