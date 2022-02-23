@@ -1,12 +1,12 @@
 import Layout from "../cores/Layout";
 import { Redirect } from "react-router-dom";
 import { useState } from "react";
-import { signIn } from "../auth";
+import { signIn, authenticate } from "../auth";
 
 const SignIn = () => {
   const [state, setState] = useState({
-    email: "",
-    password: "",
+    email: "nam@gmail.com",
+    password: "namdeptrai2001",
     error: "",
     loading: false,
     redirectToReferrer: false,
@@ -25,9 +25,11 @@ const SignIn = () => {
           loading: false,
         });
       } else {
-        setState({
-          ...state,
-          redirectToReferrer: true,
+        authenticate(data, () => {
+          setState({
+            ...state,
+            redirectToReferrer: true,
+          });
         });
       }
     });
@@ -96,8 +98,8 @@ const SignIn = () => {
   return (
     <>
       <Layout
-        title="Sign up"
-        description="Sign up Node React E-commerce App"
+        title="Sign in"
+        description="Sign in Node React E-commerce App"
         className="container col-md-8 offset-md-2"
       >
         {showError()}
