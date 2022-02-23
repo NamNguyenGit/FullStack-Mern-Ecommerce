@@ -7,13 +7,15 @@ import UserDashboard from "./user/UserDashboard";
 import AdminDashboard from "./user/AdminDashboard";
 import AdminRoute from "./auth/AdminRoute";
 import AddCategory from "./admin/AddCategory";
-import AddProduct from "./admin/AddProduct"
+import AddProduct from "./admin/AddProduct";
+import Shop from "./cores/Shop";
 
 const Routes = () => {
   return (
     <Router>
       <Switch>
         <Route path="/" exact component={Home} />
+        <Route path="/shop" exact component={Shop} />
         <Route path="/signIn" exact component={SignIn} />
         <Route path="/signUp" exact component={SignUp} />
         <PrivateRoute path="/user/dashboard" exact component={UserDashboard} />
