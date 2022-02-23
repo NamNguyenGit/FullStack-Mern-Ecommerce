@@ -1,6 +1,6 @@
 import { API } from "../config";
 
-const signup = (user) => {
+export const signup = (user) => {
   return fetch(`${API}/signUp`, {
     method: "POST",
     headers: {
@@ -17,4 +17,22 @@ const signup = (user) => {
     });
 };
 
-export default signup;
+
+export const signIn = (user) => {
+  return fetch(`${API}/signIn`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+ 
