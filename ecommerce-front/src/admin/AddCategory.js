@@ -5,6 +5,7 @@ import { useState } from "react";
 import { createCategory } from "./apiAdmin";
 
 const AddCategory = () => {
+    
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -79,12 +80,14 @@ const AddCategory = () => {
         title="Add New Category"
         description="Ready To Add A New Category"
       >
-        <div className="row">
-          <div className="col-md-8 offset-md-2">
-            {showSuccess()}
-            {showError()}
-            {newCategoryForm()}
-            {goBack()}
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-8 offset-md-2">
+              {showSuccess()}
+              {showError()}
+              {newCategoryForm()}
+              {goBack()}
+            </div>
           </div>
         </div>
       </Layout>
