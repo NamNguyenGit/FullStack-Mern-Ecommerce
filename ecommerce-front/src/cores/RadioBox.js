@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 
-const RadioBox = ({prices}) => {
-    const [vakue, setValue] = useState(0)
+const RadioBox = ({prices, handleFilters}) => {
+    const [value, setValue] = useState(0)
     
-    const handleChange = () => {
-        
+    const handleChange = (event) => {
+        handleFilters(event.target.value)   
+        setValue(event.target.value)     
     }
 
     return (
@@ -15,6 +16,7 @@ const RadioBox = ({prices}) => {
               <input
                 onChange={handleChange}
                 value={`${p._id}`}
+                name={p}
                 type="radio"
                 className="mr-2 ml-4"
               />
