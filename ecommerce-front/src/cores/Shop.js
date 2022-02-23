@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Card from "./Card";
 import CheckBox from "./CheckBox";
 import { getCategories } from "./apiCore";
+import { prices } from "./FixPrice";
 
 const Shop = () => {
     const [myFilters, setMyFilters] = useState({
