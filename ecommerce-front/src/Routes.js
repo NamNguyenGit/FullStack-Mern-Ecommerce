@@ -4,6 +4,7 @@ import SignUp from "./user/Signup";
 import Home from "./cores/Home";
 import PrivateRoute from "./auth/PrivateRoute"
 import UserDashboard from "./user/UserDashboard";
+import AdminDashboard from "./user/AdminDashboard";
 
 const Routes = () => {
   return (
