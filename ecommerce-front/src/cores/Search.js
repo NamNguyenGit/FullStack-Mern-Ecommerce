@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCategories, list } from "./apiCore";
+import Card from "./Card";
 
 const Search = () => {
   const [data, setData] = useState({
@@ -27,29 +28,38 @@ const Search = () => {
   }, []);
 
   const searchData = () => {
-    
-      if(search) {
-          list({search: search || undefined, category: category})
-            .then(response => {
-                if(response.error) {
-                    console.log(response.error)
-                }
-                else {
-                    setData({...data, results: response, searched: true})
-                }
-            })
-      }
-  }
-
-  const searchSubmit = (e) => {
-      e.preventDefault();
-      searchData()
-
+    if (search) {
+      list({ search: search || undefined, category: category }).then(
+        (response) => {
+          if (response.error) {
+            console.log(response.error);
+          } else {
+            setData({ ...data, results: response, searched: true });
+          }
+        }
+      );
+    }
   };
 
-  const handleChange = (name) => e => {
-      setData({...data, [name]: e.target.value, searched: false});
+  const searchSubmit = (e) => {
+    e.preventDefault();
+    searchData();
+  };
 
+  const handleChange = (name) => (e) => {
+    setData({ ...data, [name]: e.target.value, searched: false });
+  };
+
+  const searchProducts = (results = []) => {
+    return (
+      <>
+        <div className="row">
+            {results.map((product,i) => (
+                <Card key={i} product={product}/>
+            ))}
+        </div>
+      </>
+    );
   };
 
   const searchForm = () => {
@@ -83,7 +93,7 @@ const Search = () => {
             </div>
           </span>
         </form>
-        ;
+        
       </>
     );
   };
@@ -91,9 +101,8 @@ const Search = () => {
   return (
     <>
       <div>
-        <div className="container mb-3">{searchForm()}
-        {JSON.stringify(results)}
-        </div>
+        <div className="container mb-3">{searchForm()}</div>
+        <div className="container-fluid mb-3">{searchProducts(results)}</div>
       </div>
     </>
   );
