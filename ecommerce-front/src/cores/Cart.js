@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import Card from "./Card";
-import { getCart } from "./cartHelps";
+import { getCart, removeItem } from "./cartHelps";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
+    const [run, setRun] = useState(false);
+
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     setItems(getCart());
-  }, []);
+  }, [run]);
 
   const showItems = (items) => {
     return (
@@ -18,7 +20,15 @@ const Cart = () => {
           <h2>Your cart has {`${items.length}`} items </h2>
           <hr />
           {items.map((product, i) => (
-            <Card key={i} product={product} showAddToCartButtons={false} cartUpdate={true} />
+            <Card
+              key={i}
+              product={product}
+              showAddToCartButtons={false}
+              cartUpdate={true}
+              showRemoveProductButton = {true}
+              setRun={setRun}
+            run={run}
+            />
           ))}
         </div>
       </>
