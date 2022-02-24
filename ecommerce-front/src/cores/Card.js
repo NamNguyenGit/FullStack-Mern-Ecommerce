@@ -4,7 +4,7 @@ import moment from "moment";
 import { addItem } from "./cartHelps";
 import { useState } from "react";
 
-const Card = ({ product, showViewProductButton = true }) => {
+const Card = ({ product, showViewProductButton = true, showAddToCartButtons = true }) => {
   const [redirect, setRedirect] = useState(false)
 
   const addToCart = () => {
@@ -31,8 +31,8 @@ const Card = ({ product, showViewProductButton = true }) => {
     );
   };
 
-  const showAddToCartButton = () => {
-    return (
+  const showAddToCartButton = (showAddToCartButtons) => {
+    return showAddToCartButtons && (
       <>
         <button  onClick={addToCart} className="btn btn-outline-warning mt-2 mb-2">
           Add to Card
@@ -72,7 +72,7 @@ const Card = ({ product, showViewProductButton = true }) => {
           <br />
           {showViewButton(showViewProductButton)}
 
-          {showAddToCartButton()}
+          {showAddToCartButton(showAddToCartButtons)}
         </div>
       </div>
     </>
