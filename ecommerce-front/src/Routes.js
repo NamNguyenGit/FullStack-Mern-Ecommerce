@@ -10,11 +10,13 @@ import AddCategory from "./admin/AddCategory";
 import AddProduct from "./admin/AddProduct";
 import Shop from "./cores/Shop";
 import Products from "./cores/Product";
+import Cart from "./cores/Cart";
 
 const Routes = () => {
   return (
     <Router>
       <Switch>
+        <Route path="/cart" exact component={Cart} />
         <Route path="/" exact component={Home} />
         <Route path="/product/:productId" exact component={Products} />
         <Route path="/shop" exact component={Shop} />
