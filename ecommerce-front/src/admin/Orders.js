@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Layout from "../cores/Layout";
-import { listOrders } from "./apiAdmin";
+import { listOrders, getStatusValue } from "./apiAdmin";
 import { isAuthenticated } from "../auth";
 import moment from "moment";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-
+  const [status, setStatus] = useState([]);
   const { user, token } = isAuthenticated();
 
   const loadOrders = () => {
@@ -19,8 +19,19 @@ const Orders = () => {
     });
   };
 
+  const loadStatusValues = () => {
+    getStatusValue(user._id, token).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setStatus(data);
+      }
+    });
+  };
+
   useEffect(() => {
     loadOrders();
+    loadStatusValues();
   }, []);
 
   const showOrdersLength = () => {
@@ -39,6 +50,27 @@ const Orders = () => {
         <div className="input-group-text">{key}</div>
       </div>
       <input type="text" value={value} className="form-control" readOnly />
+    </div>
+  );
+
+  const handleStatusChange = (e,orderId) => {
+    console.log("ss")
+  }
+
+  const showStatus = (order) => (
+    <div className="form-group">
+      <h3 className="mark mb-4"> Status: {order.status}</h3>
+      <select
+        className="form-control"
+        onChange={(e) => handleStatusChange(e, order._id)}
+      >
+        <option>Update Status</option>
+        {status.map((s, i) => (
+          <option key={i} value={s}>
+            {s}{" "}
+          </option>
+        ))}
+      </select>
     </div>
   );
 
@@ -63,7 +95,7 @@ const Orders = () => {
                     <span className="bg-primary">Order ID : {order._id}</span>
                   </h2>
                   <ul className="list-group mb-2">
-                    <li className="list-group-item">{order.status}</li>
+                    <li className="list-group-item">{showStatus(order)}</li>
                     <li className="list-group-item">
                       Transaction ID :{order.transaction_id}
                     </li>
