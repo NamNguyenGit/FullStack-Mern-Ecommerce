@@ -67,20 +67,30 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
         processPayment(userId, token, paymentData)
           .then((response) => {
 
+
+
             const createOrderData = {
               products: products,
               transaction_id: response.transaction.id,
               amount: response.transaction.amount,
-              address: data.address
-            }
+              address: data.address,
+            };
+
+
+
             createOrder(userId, token, createOrderData)
+              .then((response) => {
+                emptyCart(() => {
+                  setRun(!run); // update parent state
+                  setData({ loading: false, success: true
+                   });
+                });
+              })
 
-            setData({ ...data, success: response.success });
-
-            emptyCart(() => {
-              setRun(!run); // update parent state
-              setData({ loading: false });
-            });
+              .catch((error) => {
+                console.log(error);
+                setData({ loading: false });
+              });
           })
           .catch((error) => {
             setData({ loading: false });
@@ -91,23 +101,23 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
       });
   };
 
-  const handleAddress = event => {
+  const handleAddress = (event) => {
     setData({ ...data, address: event.target.value });
-};
+  };
 
   const showDropIn = () => (
     <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken !== null && products.length > 0 ? (
         <div>
           <div className="gorm-group mb-3">
-                        <label className="text-muted">Delivery address:</label>
-                        <textarea
-                            onChange={handleAddress}
-                            className="form-control"
-                            value={data.address}
-                            placeholder="Type your delivery address here..."
-                        />
-                    </div>
+            <label className="text-muted">Delivery address:</label>
+            <textarea
+              onChange={handleAddress}
+              className="form-control"
+              value={data.address}
+              placeholder="Type your delivery address here..."
+            />
+          </div>
           <DropIn
             options={{
               authorization: data.clientToken,
