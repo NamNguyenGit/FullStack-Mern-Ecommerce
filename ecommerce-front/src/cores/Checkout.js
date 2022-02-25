@@ -4,9 +4,11 @@ import { isAuthenticated } from "../auth";
 import { getBraintreeClientToken } from "./apiCore";
 import DropIn from "braintree-web-drop-in-react";
 import { processPayment } from "./apiCore";
+import { emptyCart } from "./cartHelps";
 
-const Checkout = ({ products }) => {
+const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
   const [data, setData] = useState({
+    loading: false,
     success: false,
     clientToken: null,
     error: "",
@@ -22,7 +24,7 @@ const Checkout = ({ products }) => {
       if (data.error) {
         setData({ ...data, error: data.error });
       } else {
-        setData({  clientToken: data.clientToken });
+        setData({ clientToken: data.clientToken });
       }
     });
   };
@@ -48,6 +50,7 @@ const Checkout = ({ products }) => {
   };
 
   const buy = () => {
+    setData({ loading: true });
     // send the nonce to your server
     // nonce = data.instance.requestPaymentMethod()
     let nonce;
@@ -55,6 +58,7 @@ const Checkout = ({ products }) => {
       .requestPaymentMethod()
       .then((data) => {
         nonce = data.nonce;
+
         const paymentData = {
           paymentMethodNonce: nonce,
           amount: getTotal(products),
@@ -62,12 +66,18 @@ const Checkout = ({ products }) => {
 
         processPayment(userId, token, paymentData)
           .then((response) => {
-            setData({...data, success: response.success})
+            setData({ ...data, success: response.success });
+
+            emptyCart(() => {
+              setRun(!run); // update parent state
+              setData({ loading: false });
+            });
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            setData({ loading: false });
+          });
       })
       .catch((error) => {
-        console.log(error);
         setData({ ...data, error: error.message });
       });
   };
@@ -79,6 +89,9 @@ const Checkout = ({ products }) => {
           <DropIn
             options={{
               authorization: data.clientToken,
+              paypal: {
+                flow: "vault",
+              },
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
@@ -107,18 +120,19 @@ const Checkout = ({ products }) => {
       Thanks! Your payment was successful!
     </div>
   );
+
   const showLoading = (loading) =>
     loading && <h2 className="text-danger">Loading...</h2>;
 
   return (
     <>
-      <h2>
+      <div>
         Total: <span>$</span>
         {getTotal()}
         {showLoading(data.loading)}
         {showSuccess(data.success)}
         {showError(data.error)}
-      </h2>
+      </div>
       {showCheckout()}
     </>
   );
