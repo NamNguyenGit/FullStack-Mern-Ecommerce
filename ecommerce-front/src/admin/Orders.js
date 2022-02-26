@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "../cores/Layout";
-import { listOrders, getStatusValue } from "./apiAdmin";
+import { listOrders, getStatusValue, updateOrderStatus } from "./apiAdmin";
 import { isAuthenticated } from "../auth";
 import moment from "moment";
 
@@ -53,9 +53,15 @@ const Orders = () => {
     </div>
   );
 
-  const handleStatusChange = (e,orderId) => {
-    console.log("ss")
-  }
+  const handleStatusChange = (e, orderId) => {
+    updateOrderStatus(user._id, token, orderId, e.target.value).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        loadOrders()
+      }
+    });
+  };
 
   const showStatus = (order) => (
     <div className="form-group">
