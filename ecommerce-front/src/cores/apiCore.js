@@ -1,7 +1,7 @@
 import { API } from "../config";
 import queryString from "query-string";
 
-const getProducts = (sortBy) => {
+export const getProducts = (sortBy) => {
   return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=6`, {
     method: "GET",
   })
@@ -10,7 +10,7 @@ const getProducts = (sortBy) => {
     })
     .catch((err) => console.log(err));
 };
-export default getProducts;
+
 
 export const getCategories = () => {
   return fetch(`${API}/categories`, {
