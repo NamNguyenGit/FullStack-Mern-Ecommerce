@@ -1,7 +1,7 @@
 import { API } from "../config";
 import queryString from "query-string";
 
-export const getProducts = (sortBy) => {
+const getProducts = (sortBy) => {
   return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=6`, {
     method: "GET",
   })
@@ -11,6 +11,7 @@ export const getProducts = (sortBy) => {
     .catch((err) => console.log(err));
 };
 
+export default getProducts;
 
 export const getCategories = () => {
   return fetch(`${API}/categories`, {
@@ -81,7 +82,7 @@ export const getBraintreeClientToken = (userId, token) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((response) => {
@@ -96,9 +97,9 @@ export const processPayment = (userId, token, paymentData) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(paymentData)
+    body: JSON.stringify(paymentData),
   })
     .then((response) => {
       return response.json();
@@ -112,15 +113,12 @@ export const createOrder = (userId, token, createOrderData) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({order: createOrderData})
+    body: JSON.stringify({ order: createOrderData }),
   })
     .then((response) => {
       return response.json();
     })
     .catch((err) => console.log(err));
 };
-
-
-
