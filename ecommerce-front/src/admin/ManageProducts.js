@@ -22,7 +22,7 @@ const ManageProducts = () => {
   const destroy = (productId) => {
     deleteProduct(productId, user._id, token).then((data) => {
       if (data.error) {
-        console.log(data.error);
+        console.log(productId,user._id, token);
       } else {
         loadProducts();
       }
@@ -56,13 +56,13 @@ const ManageProducts = () => {
                     <span className="badge badge-warning badge-pill">
                       Update
                     </span>
-                    <span
-                      onClick={() => destroy(product._id)}
-                      className="badge badge-danger badge-pill"
-                    >
-                      Delete
-                    </span>
                   </Link>
+                  <span
+                    onClick={() => destroy(product._id)}
+                    className="badge badge-danger badge-pill"
+                  >
+                    Delete
+                  </span>
                 </li>
               ))}
             </ul>

@@ -107,7 +107,7 @@ export const getProducts = () => {
     .catch((err) => console.log(err));
 };
 
-export const deleteProduct = (userId, token, productId) => {
+export const deleteProduct = (productId, userId, token) => {
   return fetch(`${API}/product/${productId}/${userId}`, {
     method: "DELETE",
     headers: {
@@ -131,10 +131,9 @@ export const getProduct = (productId) => {
     })
     .catch((err) => console.log(err));
 };
-
-export const updateProduct = (userId, token, productId, product) => {
+export const updateProduct = (productId, userId, token, product) => {
   return fetch(`${API}/product/${productId}/${userId}`, {
-    method: "put",
+    method: "PUT",
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
